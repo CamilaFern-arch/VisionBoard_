@@ -3,107 +3,317 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Agenda & Vision Board</title>
+  <title>Mi Agenda & Vision Book</title>
   <style>
-    body {
-      font-family: 'Helvetica Neue', sans-serif;
-      background-color: #f7f7f7;
-      color: #333;
-      margin: 0;
-      padding: 20px;
+    :root {
+      --bg-color: #fcfbf9;
+      --text-color: #2c2c2c;
+      --accent-color: #8c857b;
+      --border-color: #e5e2dd;
     }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
     header {
       text-align: center;
-      margin-bottom: 30px;
+      padding: 40px 20px 20px;
     }
+
     h1 {
-      font-weight: 300;
-      letter-spacing: 2px;
+      font-weight: 200;
+      letter-spacing: 4px;
       text-transform: uppercase;
+      font-size: 24px;
+      margin-bottom: 8px;
     }
-    .upload-section {
-      text-align: center;
-      margin-bottom: 20px;
+
+    .subtitle {
+      font-weight: 300;
+      color: var(--accent-color);
+      font-size: 13px;
+      letter-spacing: 2px;
     }
+
+    .controls {
+      margin: 20px 0;
+      display: flex;
+      gap: 15px;
+    }
+
     input[type="file"] {
       display: none;
     }
-    .custom-btn {
-      border: 1px solid #333;
+
+    .btn {
+      border: 1px solid var(--text-color);
       background: transparent;
-      padding: 10px 20px;
-      font-size: 14px;
+      padding: 10px 24px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       cursor: pointer;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
+      font-weight: 300;
     }
-    .custom-btn:hover {
-      background: #333;
+
+    .btn:hover {
+      background: var(--text-color);
+      color: var(--bg-color);
+    }
+
+    .btn-danger {
+      border-color: #a35d5d;
+      color: #a35d5d;
+    }
+
+    .btn-danger:hover {
+      background: #a35d5d;
       color: #fff;
     }
-    .vision-board {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      max-width: 1000px;
-      margin: 0 auto;
+
+    /* Estilo Agenda Book Interactivo */
+    .book-container {
+      width: 90%;
+      max-width: 650px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+      padding: 40px;
+      border-radius: 4px;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: opacity 0.3s ease;
     }
-    .card {
-      position: relative;
+
+    .image-frame {
       width: 100%;
-      padding-top: 100%; /* Ratio 1:1 */
+      height: 420px;
+      background-color: #f2efe9;
+      border-radius: 2px;
       overflow: hidden;
-      border-radius: 8px;
-      background-color: #eee;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .card img {
-      position: absolute;
-      top: 0;
-      left: 0;
+
+    .image-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .manifestation-quote {
+      margin-top: 30px;
+      text-align: center;
+      font-weight: 200;
+      font-size: 16px;
+      letter-spacing: 1px;
+      line-height: 1.6;
+      color: #4a4a4a;
+      min-height: 50px;
+      font-style: italic;
+    }
+
+    .navigation {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 25px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      font-size: 12px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      color: var(--accent-color);
+      font-weight: 300;
+      text-transform: uppercase;
+      padding: 5px 10px;
+    }
+
+    .nav-btn:hover {
+      color: var(--text-color);
+    }
+
+    .counter {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent-color);
+      font-weight: 300;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--accent-color);
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 1px;
+      padding: 80px 20px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Mi Futuro Ideal</h1>
-    <p style="font-weight: 300; color: #666;">Visualiza, actúa y confía en el proceso.</p>
+    <h1>Mi Agenda de Manifestación</h1>
+    <div class="subtitle">CREANDO MI FUTURO IDEAL • PASO A PASO</div>
   </header>
 
-  <div class="upload-section">
-    <label for="imageLoader" class="custom-btn">SUBIR MIS 10 FOTOS</label>
+  <div class="controls">
+    <label for="imageLoader" class="btn">Subir Inspiración (Hasta 33)</label>
     <input type="file" id="imageLoader" accept="image/*" multiple>
+    <button class="btn btn-danger" id="clearBtn">Reiniciar Agenda</button>
   </div>
 
-  <div class="vision-board" id="board">
+  <div class="book-container">
+    <div id="bookContent" style="width: 100%;">
+      <div class="empty-state" id="emptyState">
+        No has cargado tus imágenes aún.<br>Haz clic en "Subir Inspiración" para comenzar tu agenda.
+      </div>
+      
+      <div id="activeView" style="display: none; width: 100%;">
+        <div class="image-frame">
+          <img id="currentImage" src="" alt="Manifestación">
+        </div>
+        
+        <div class="manifestation-quote" id="currentQuote"></div>
+        
+        <div class="navigation">
+          <button class="nav-btn" id="prevBtn">&larr; Anterior</button>
+          <span class="counter" id="pageCounter">1 / 33</span>
+          <button class="nav-btn" id="nextBtn">Siguiente &rarr;</button>
+        </div>
+      </div>
     </div>
+  </div>
 
   <script>
-    const imageLoader = document.getElementById('imageLoader');
-    const board = document.getElementById('board');
+    // Frases de manifestación finas y elegantes alineadas con tus metas
+    const quotes = [
+      "Atraigo la abundancia económica de forma fluida y constante.",
+      "Mi espacio refleja mi paz interior, elegancia y claridad.",
+      "Disfruto cada paso del proceso construyendo la vida que merezco.",
+      "Mis ventas crecen día con día; el éxito profesional es mi realidad.",
+      "Agradezco el dinero que entra en efectivo y tarjeta a mi vida.",
+      "Comparto mi camino con un amor sano, deportivo y lleno de luz.",
+      "La disciplina diaria en mi espacio de trabajo crea libertad financiera.",
+      "Cada mañana me despierto con un propósito claro y enfoque pleno.",
+      "Mi hogar es mi santuario de tranquilidad con vistas hacia el horizonte.",
+      "Aprecio los momentos sencillos de amor, compañía y lealtad.",
+      "Tengo herramientas y tecnología que impulsan mis metas sin límites.",
+      "Merezco todo el éxito, la calma y el bienestar que estoy creando."
+    ];
 
+    let imageList = [];
+    let currentIndex = 0;
+
+    const imageLoader = document.getElementById('imageLoader');
+    const clearBtn = document.getElementById('clearBtn');
+    const emptyState = document.getElementById('emptyState');
+    const activeView = document.getElementById('activeView');
+    const currentImage = document.getElementById('currentImage');
+    const currentQuote = document.getElementById('currentQuote');
+    const pageCounter = document.getElementById('pageCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Cargar fotos guardadas en localStorage al abrir la agenda
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedImages = localStorage.getItem('visionBookImages');
+      if (savedImages) {
+        imageList = JSON.parse(savedImages);
+        if (imageList.length > 0) {
+          renderBook();
+        }
+      }
+    });
+
+    // Guardar nuevas imágenes
     imageLoader.addEventListener('change', function(e) {
-      const files = Array.from(e.target.files).slice(0, 10); // Máximo 10 fotos
-      board.innerHTML = ''; // Limpiar el tablero
+      const files = Array.from(e.target.files).slice(0, 33);
+      if (files.length === 0) return;
+
+      let loadedCount = 0;
+      const newImages = [];
 
       files.forEach(file => {
         const reader = new FileReader();
         reader.onload = function(event) {
-          const card = document.createElement('div');
-          card.className = 'card';
-          
-          const img = document.createElement('img');
-          img.src = event.target.result;
-          
-          card.appendChild(img);
-          board.appendChild(card);
-        }
+          newImages.push(event.target.result);
+          loadedCount++;
+
+          if (loadedCount === files.length) {
+            imageList = newImages;
+            // Guardar en almacenamiento local
+            try {
+              localStorage.setItem('visionBookImages', JSON.stringify(imageList));
+            } catch (err) {
+              alert("Las imágenes seleccionadas son muy pesadas para el almacenamiento local. Intenta seleccionar imágenes un poco más livianas o menos cantidad.");
+            }
+            currentIndex = 0;
+            renderBook();
+          }
+        };
         reader.readAsDataURL(file);
       });
+    });
+
+    // Borrar agenda
+    clearBtn.addEventListener('click', () => {
+      if (confirm("¿Deseas reiniciar tu agenda y borrar las imágenes guardadas?")) {
+        localStorage.removeItem('visionBookImages');
+        imageList = [];
+        emptyState.style.display = 'block';
+        activeView.style.display = 'none';
+      }
+    });
+
+    // Mostrar elemento en la agenda estilo libro
+    function renderBook() {
+      if (imageList.length === 0) return;
+
+      emptyState.style.display = 'none';
+      activeView.style.display = 'block';
+
+      currentImage.src = imageList[currentIndex];
+      
+      // Asignar frase según la página actual
+      const quoteIndex = currentIndex % quotes.length;
+      currentQuote.textContent = `"${quotes[quoteIndex]}"`;
+
+      pageCounter.textContent = `${currentIndex + 1} / ${imageList.length}`;
+    }
+
+    // Navegación
+    prevBtn.addEventListener('click', () => {
+      if (imageList.length === 0) return;
+      currentIndex = (currentIndex - 1 + imageList.length) % imageList.length;
+      renderBook();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (imageList.length === 0) return;
+      currentIndex = (currentIndex + 1) % imageList.length;
+      renderBook();
     });
   </script>
 
