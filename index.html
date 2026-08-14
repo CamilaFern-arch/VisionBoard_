@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Agenda & Vision Board</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #f7f7f7;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .upload-section {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .custom-btn {
+      border: 1px solid #333;
+      background: transparent;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+    .custom-btn:hover {
+      background: #333;
+      color: #fff;
+    }
+    .vision-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .card {
+      position: relative;
+      width: 100%;
+      padding-top: 100%; /* Ratio 1:1 */
+      overflow: hidden;
+      border-radius: 8px;
+      background-color: #eee;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .card img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Mi Futuro Ideal</h1>
+    <p style="font-weight: 300; color: #666;">Visualiza, actúa y confía en el proceso.</p>
+  </header>
+
+  <div class="upload-section">
+    <label for="imageLoader" class="custom-btn">SUBIR MIS 10 FOTOS</label>
+    <input type="file" id="imageLoader" accept="image/*" multiple>
+  </div>
+
+  <div class="vision-board" id="board">
+    </div>
+
+  <script>
+    const imageLoader = document.getElementById('imageLoader');
+    const board = document.getElementById('board');
+
+    imageLoader.addEventListener('change', function(e) {
+      const files = Array.from(e.target.files).slice(0, 10); // Máximo 10 fotos
+      board.innerHTML = ''; // Limpiar el tablero
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const card = document.createElement('div');
+          card.className = 'card';
+          
+          const img = document.createElement('img');
+          img.src = event.target.result;
+          
+          card.appendChild(img);
+          board.appendChild(card);
+        }
+        reader.readAsDataURL(file);
+      });
+    });
+  </script>
+
+</body>
+</html>
